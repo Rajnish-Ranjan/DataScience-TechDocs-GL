@@ -1,0 +1,9 @@
+torch
+flask
+flasgger
+errant
+spacy
+transformers
+# python -m spacy download en
+# tensorflow
+# jax
