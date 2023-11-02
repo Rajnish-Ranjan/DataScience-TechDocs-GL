@@ -27,11 +27,11 @@ async def process_image():
         type: file
         required: true
         description: The image to process.
-      - name: output_format
+      - name: output_file
         in: formData
         type: string
         required: false
-        description: The output file format to be returned
+        description: The output file that to be returned
     responses:
       200:
         description: Text extracted from the image.
@@ -53,11 +53,9 @@ async def process_image():
         # Check if an image was uploaded
         if not image_file:
             return jsonify({'error': 'No image file provided'}), 400
-        
-        # output_file_path = request.files['output_filepath']
 
-        # if not output_file_path:
-        #     return jsonify({'error': 'No output filepath provided'}), 400
+        # Get the output file name from the form data
+        output_file_name = request.form.get('output_file', 'output.docx')
 
         # Open the image using Pillow (PIL)
         image = Image.open(image_file)
@@ -65,7 +63,7 @@ async def process_image():
         text = pytesseract.image_to_string(image)
 
         # Specify the path for the output text file
-        output_file_path = 'output.docx'
+        output_file_path = output_file_name
 
         # Save the extracted text to a text file
         with open(output_file_path, 'w') as text_file:
@@ -76,4 +74,4 @@ async def process_image():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,port=8081)
